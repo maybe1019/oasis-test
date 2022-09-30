@@ -6,6 +6,7 @@ import { useState } from "react";
 import Web3 from "web3";
 
 import abi from '../config/oasisAbi.json'
+import nftAbi from '../config/nftAbi.json'
 import config from '../config/config.json'
 
 export default function Home() {
@@ -45,6 +46,12 @@ export default function Home() {
     console.log(res)
   }
 
+  const approve = async () => {
+    const web3 = new Web3(library.provider)
+    const contract = new web3.eth.Contract(nftAbi, nftContractAddress)
+    await contract.methods.setApprovalForAll(config.oasisAddress, true).send({from: account})
+  }
+
   return (
     <div className="home">
       <div>
@@ -72,6 +79,12 @@ export default function Home() {
 
         <button onClick={handleMakeOrder}>Make Order</button>
       </div>
+
+      <div>
+        <button onClick={approve}>Approve all</button>
+        if you have already approved, don't click again.
+      </div>
+
       <div className="line"></div>
 
       <div>
